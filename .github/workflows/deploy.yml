@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x] # We will deploy with only one version of node  
+        node-version: [18.x] # We will deploy with only one version of node  
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -31,8 +31,29 @@ jobs:
           npm ci
           npm run build --if-present
           npm test      
-      - name: deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+#       - name: deploy to gh-pages
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+#           publish_dir: ./build 
+          
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v1
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./build 
+          # Upload entire repository
+          path: './build'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main
