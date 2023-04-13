@@ -39,7 +39,7 @@ jobs:
         run: npm ci
 
       - name: NPM Build
-        run: ng build --prod --output-path=dist
+        run: ng build --output-path=dist
 
       # Setup GitHub Pages in ./dist folder and deploy
       - name: Setup GitHub Pages
