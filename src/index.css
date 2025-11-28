@@ -1,0 +1,304 @@
+:root {
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-serif: 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+  
+  /* Cornell Color Palette */
+  --cornell-red: #b31b1b;
+  --cornell-black: #222222;
+  --cornell-white: #ffffff;
+  --cornell-light-gray: #f7f7f7;
+  --cornell-link: #3787b0;
+  --cornell-royal-blue: #0068ac;
+  --cornell-dark-brown: #a2998b;
+  --cornell-beige: #d8d2c9;
+  
+  /* Semantic Colors */
+  --color-bg: var(--cornell-white);
+  --color-text: var(--cornell-black);
+  --color-text-light: #555555;
+  --color-accent: var(--cornell-red);
+  --color-border: #e0e0e0;
+  --color-bg-alt: var(--cornell-light-gray);
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 6rem;
+
+  --container-width: 900px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-serif);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+a {
+  color: var(--cornell-link);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--cornell-red);
+  text-decoration: underline;
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Header */
+.site-header {
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-lg) 0;
+}
+
+.header-profile {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+}
+
+.profile-name {
+  font-size: 2.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.profile-role {
+  font-size: 1.125rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+}
+
+.cornell-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-md);
+}
+
+.cornell-logo-img {
+  height: 2rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--spacing-sm);
+  font-size: 0.875rem;
+}
+
+.profile-bio {
+  max-width: 40rem;
+  color: var(--color-text-light);
+}
+
+/* Sections */
+.section {
+  padding: var(--spacing-lg) 0;
+}
+
+.bg-alt {
+  background-color: var(--color-bg-alt);
+}
+
+.section-title {
+  font-family: var(--font-sans);
+  font-size: 1.75rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--cornell-red);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
+}
+
+/* Projects */
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.project-card {
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.project-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-title a {
+  color: var(--color-text);
+}
+
+.project-title a:hover {
+  color: var(--cornell-red);
+}
+
+.project-meta {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+}
+
+.project-description {
+  color: var(--color-text);
+}
+
+/* Engineering */
+.grid {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.grid-cols-2 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .header-profile {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 767px) {
+  .header-profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+}
+
+.engineering-card {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  transition: background-color 0.2s;
+}
+
+.engineering-card:hover {
+  background-color: var(--color-bg-alt);
+}
+
+.engineering-title {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.engineering-description {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-tag {
+  font-size: 0.75rem;
+  background-color: var(--color-bg-alt);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-light);
+}
+
+/* Experience */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.experience-item {
+  margin-bottom: var(--spacing-sm);
+}
+
+.experience-title {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.experience-meta {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
+}
+
+.experience-description {
+  font-size: 0.875rem;
+  color: var(--color-text);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--spacing-md) 0;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+}
+
+
