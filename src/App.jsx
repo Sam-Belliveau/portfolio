@@ -28,8 +28,8 @@ function App() {
                 </div>
               </div>
               <p className="profile-bio">
-                I am a researcher interested in systems, compilers, and programming languages.
-                My work focuses on making software more reliable and efficient.
+                I am an undergraduate researcher at Cornell University under Abe Davis.
+                I do work in Signal Processing, HCI, and Computer Vision.
               </p>
             </div>
           </div>
@@ -44,11 +44,23 @@ function App() {
             <div className="project-list">
               {researchProjects.map((project, index) => (
                 <div key={index} className="project-card">
-                  <h3 className="project-title">
-                    <a href={project.link}>{project.title}</a>
-                  </h3>
-                  <p className="project-meta">{project.venue} {project.year}</p>
-                  <p className="project-description">{project.description}</p>
+                  <div className="project-header">
+                    <h3 className="project-title">
+                      {project.link ? <a href={project.link}>{project.title}</a> : project.title}
+                    </h3>
+                    <span className="status-badge">{project.status}</span>
+                  </div>
+                  <p className="project-meta">{project.role}</p>
+
+                  <div className="project-summary">
+                    <p>{project.summary}</p>
+                  </div>
+
+                  <div className="tech-tags">
+                    {project.tech.map((t, i) => (
+                      <span key={i} className="tech-tag">{t}</span>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -59,11 +71,15 @@ function App() {
         <section id="engineering" className="section">
           <div className="container">
             <h2 className="section-title">Engineering Projects</h2>
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-1">
               {engineeringProjects.map((project, index) => (
                 <div key={index} className="engineering-card">
                   <h3 className="engineering-title">{project.title}</h3>
-                  <p className="engineering-description">{project.description}</p>
+
+                  <div className="project-summary">
+                    <p>{project.summary}</p>
+                  </div>
+
                   <div className="tech-tags">
                     {project.tech.map((t, i) => (
                       <span key={i} className="tech-tag">

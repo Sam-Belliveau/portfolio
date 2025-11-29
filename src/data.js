@@ -4,7 +4,7 @@ export const personalInfo = {
   name: "Sam Belliveau",
   title: "Undergraduate Researcher @ Cornell University",
   tagline: "Democratizing complex data capture workflows through end-to-end systems.",
-  bio: "My research interests lie at the intersection of Human-Computer Interaction (HCI), Computational Photography, and Systems Engineering. I am driven by the desire to bridge the gap between creative intent and rigid capture tools by architecting systems that span hardware, low-level software, and user interfaces.",
+  bio: "I am a researcher interested in systems, compilers, and programming languages, driven by the trade-offs between manual memory management (RAII) and modern garbage collection (ZGC/G1). My work focuses on how system architecture impacts software reliability, bridging the gap between high-level abstractions and bare-metal performance. I specialize in optimizing the hardware-software interface, from RISC-V/ARM Cortex-M constraints to efficient DMA buffering, while leveraging tools like Bash for automation and C/C++ for performance-critical loops.",
   email: "srb343@cornell.edu",
   links: [
     { name: "Github", url: "https://github.com/Sam-Belliveau", icon: Github },
@@ -20,27 +20,24 @@ export const researchProjects = [
     title: "CaptureGraph",
     role: "Lead Researcher, First Author",
     status: "In Prep",
-    description: "A system designed to decouple capture procedures from application logic. It features a Python-based Domain Specific Language (DSL) allowing researchers to programmatically define complex capture workflows, serialized into JSON for execution on a companion iOS app.",
+    summary: "Conducting reproducible research in computational photography is often hindered by tightly coupled capture logic and application code. I designed CaptureGraph, a system that decouples capture procedures from application logic using a custom Python-based DSL. This architecture enables \"Distribution-Aware\" data collection, ensuring data is organized into semantic hierarchies ready for algorithmic analysis immediately upon capture.",
     tech: ["Python", "iOS (Swift/SwiftUI)", "JSON Serialization"],
-    insight: "Enables \"Distribution-Aware\" data collection, organizing data into semantic hierarchies ready for algorithmic analysis.",
     image: null // Placeholder
   },
   {
     title: "CineCraft",
     role: "Researcher, Second Author",
     status: "Under Review",
-    description: "A tool for \"Cellular Cinematography\" that unifies shot planning and execution. Utilizes a \"Shot Plan\" data structure based on a Two-Plane Model (Foreground/Background) to define relative camera motion.",
+    summary: "Achieving professional \"focus pulling\" on consumer hardware is difficult due to the lack of precise control. I developed CineCraft, a tool for \"Cellular Cinematography\" that utilizes a \"Two-Plane Model\" to abstract the 3D scene. The system automates focus and zoom operations using computer vision, effectively acting as a virtual \"focus puller\" to democratize complex cinematographic techniques.",
     tech: ["iOS (Swift, Metal)", "Vision Framework", "Computer Vision"],
-    insight: "Automates focus and zoom in real-time, effectively acting as a virtual \"focus puller\" to democratize complex shots like dolly zooms.",
     image: null // Placeholder
   },
   {
     title: "DynaBox",
     role: "Researcher, Co-Author",
     status: "In Prep",
-    description: "A system to digitize analog \"talkbox\" performances using a smartphone. Implements AutoRegressive with eXtra input (ARX) models to isolate vocal tract resonances.",
+    summary: "Digitizing analog \"talkbox\" performances involves capturing the nuanced resonance of the human vocal tract. I co-developed DynaBox, a system that uses a smartphone to capture these performances, implementing AutoRegressive with eXtra input (ARX) models to isolate vocal tract resonances. The system serializes extracted formants into MIDI messages, allowing analog performances to be edited in DAWs.",
     tech: ["Audio Signal Processing", "Python", "MIDI Protocol"],
-    insight: "Serializes formants into MIDI Continuous Controller (CC) messages, allowing analog performances to be edited in DAWs like Logic Pro.",
     image: null // Placeholder
   }
 ];
@@ -48,9 +45,8 @@ export const researchProjects = [
 export const engineeringProjects = [
   {
     title: "Real-Time Sound Localization",
-    description: "An embedded system architected on a Raspberry Pi Pico to achieve high-accuracy directional hearing on constrained hardware ($20 BOM).",
+    summary: "I architected an embedded system on a Raspberry Pi Pico to achieve high-accuracy directional hearing on a $20 BOM. Using C/C++ and direct DMA buffering to bypass CPU overhead, I implemented a custom \"ping-pong\" strategy to sample three microphones at 50kHz. The system achieved zero-latency sampling and precise sound localization through optimized cross-correlation algorithms.",
     tech: ["C/C++", "DMA Buffering", "Cross-Correlation"],
-    highlight: "Implemented a custom \"ping-pong\" DMA strategy to sample three microphones at 50kHz with zero latency."
   }
 ];
 
@@ -59,13 +55,13 @@ export const teachingExperience = [
     course: "ECE 4760 (Digital Systems Design)",
     role: "Teaching Assistant",
     institution: "Cornell University",
-    description: "Assisting students with hardware debugging and documenting pin configurations."
+    description: "I mentored students in \"Digital Systems Design,\" breaking down complex technical concepts like hardware debugging and microcontroller pin configurations. I focused on helping students understand the theoretical underpinnings while mastering the practical challenges of embedded development."
   },
   {
     course: "ECE 3250 (Signal Processing)",
     role: "Teaching Assistant",
     institution: "Cornell University",
-    description: "Conducting office hours for concepts like Fourier transforms."
+    description: "I conducted office hours for \"Signal Processing,\" explaining concepts like Fourier transforms. I emphasized the communication of complex mathematical ideas to help students grasp the material."
   }
 ];
 
@@ -74,6 +70,6 @@ export const industryExperience = [
     company: "Reddit",
     role: "Software Engineer Intern",
     team: "Consumer Product Team",
-    description: "Developed scripts to create realistic test data for safety classification models."
+    description: "I developed automated scripts (using Python and Bash) to generate large-scale, realistic test data sets. This automation was critical for training and validating safety classification models, ensuring they could robustly handle diverse and edge-case user content. My work directly contributed to improving the reliability of content moderation systems."
   }
 ];
