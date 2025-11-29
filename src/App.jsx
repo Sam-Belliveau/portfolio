@@ -21,17 +21,11 @@ function App() {
               <div className="profile-header">
                 <div>
                   <h1 className="profile-name">Sam Belliveau</h1>
-                  <p className="profile-role">PhD Student in Computer Science</p>
-                  <div className="cornell-badge">
-                    <img src={cornellLogo} alt="Cornell University" className="cornell-logo-img" />
-                    <span>Cornell University</span>
-                  </div>
+                  <p className="profile-role">Undergraduate Researcher</p>
                 </div>
-                <nav className="nav-links">
-                  <a href="#research">Research</a>
-                  <a href="#engineering">Engineering</a>
-                  <a href="#experience">Experience</a>
-                </nav>
+                <div className="cornell-badge">
+                  <img src={cornellLogo} alt="Cornell University" className="cornell-logo-img" />
+                </div>
               </div>
               <p className="profile-bio">
                 I am a researcher interested in systems, compilers, and programming languages.
