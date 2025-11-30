@@ -3,7 +3,7 @@ import { Github, Mail, FileText, Linkedin } from 'lucide-react';
 export const personalInfo = {
   name: "Sam Belliveau",
   title: "Undergraduate Researcher @ Cornell University",
-  bio: "I am an undergraduate researcher at Cornell University under Abe Davis. My research interests lie at the intersection of Human Computer Interaction (HCI), Computational Photography, and Signal Processing..",
+  bio: "I am an undergraduate researcher at Cornell University under Abe Davis. My research interests lie at the intersection of Human Computer Interaction (HCI), Computational Photography, and Signal Processing.",
   links: [
     { name: "Github", url: "https://github.com/Sam-Belliveau", icon: Github },
     { name: "LinkedIn", url: "https://www.linkedin.com/in/sam-belliveau", icon: Linkedin },
