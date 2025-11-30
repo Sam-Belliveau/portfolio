@@ -1,7 +1,8 @@
 import React from 'react';
-import { researchProjects, engineeringProjects, teachingExperience, industryExperience } from './data';
+import { personalInfo, researchProjects, engineeringProjects, teachingExperience, industryExperience } from './data';
 import profilePic from './assets/profile.jpg';
 import cornellLogo from './assets/cornell-logo.svg';
+import { Download } from 'lucide-react';
 
 function App() {
   return (
@@ -20,17 +21,24 @@ function App() {
             <div className="profile-info">
               <div className="profile-header">
                 <div>
-                  <h1 className="profile-name">Sam Belliveau</h1>
-                  <p className="profile-role">Undergraduate Researcher</p>
+                  <h1 className="profile-name">{personalInfo.name}</h1>
+                  <p className="profile-role">{personalInfo.title}</p>
                 </div>
                 <div className="cornell-badge">
                   <img src={cornellLogo} alt="Cornell University" className="cornell-logo-img" />
                 </div>
               </div>
               <p className="profile-bio">
-                I am an undergraduate researcher at Cornell University under Abe Davis.
-                I do work in Signal Processing, HCI, and Computer Vision.
+                {personalInfo.bio}
               </p>
+              <div className="profile-links">
+                {personalInfo.links.map((link, index) => (
+                  <a key={index} href={link.url} className="profile-link" target="_blank" rel="noopener noreferrer">
+                    <link.icon size={12} />
+                    {link.name}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -56,10 +64,26 @@ function App() {
                     <p>{project.summary}</p>
                   </div>
 
-                  <div className="tech-tags">
-                    {project.tech.map((t, i) => (
-                      <span key={i} className="tech-tag">{t}</span>
-                    ))}
+                  <div className="project-footer">
+                    <div className="tech-tags">
+                      {project.tech.map((t, i) => (
+                        <span key={i} className="tech-tag">{t}</span>
+                      ))}
+
+                      {/* space filling div */}
+                      <div className="space-filler"></div>
+
+                      {project.documents && project.documents.length > 0 && (
+                        <div className="documents-list">
+                          {project.documents.map((doc, i) => (
+                            <a key={i} href={doc.url} className="document-link" download>
+                              <Download size={14} />
+                              {doc.name}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -74,7 +98,7 @@ function App() {
             <div className="grid grid-cols-1">
               {engineeringProjects.map((project, index) => (
                 <div key={index} className="engineering-card">
-                  <h3 className="engineering-title">{project.title}</h3>
+                  {project.link ? <a href={project.link} className="engineering-title">{project.title}</a> : <h3 className="engineering-title">{project.title}</h3>}
 
                   <div className="project-summary">
                     <p>{project.summary}</p>

@@ -100,7 +100,6 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--spacing-sm);
 }
 
 .profile-name {
@@ -136,6 +135,36 @@ a:hover {
 .profile-bio {
   max-width: 40rem;
   color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+}
+
+.profile-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.profile-link:hover {
+  background-color: var(--cornell-light-gray);
+  border-color: var(--cornell-link);
+  color: var(--cornell-link);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 /* Sections */
@@ -150,7 +179,6 @@ a:hover {
 .section-title {
   font-family: var(--font-sans);
   font-size: 1.75rem;
-  margin-bottom: var(--spacing-md);
   color: var(--cornell-red);
   border-bottom: 1px solid var(--color-border);
   padding-bottom: var(--spacing-xs);
@@ -273,6 +301,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  flex: 1;
 }
 
 .tech-tag {
@@ -318,6 +347,52 @@ a:hover {
   text-align: center;
   font-size: 0.875rem;
   color: var(--color-text-light);
+}
+
+/* Project Documents */
+.project-documents {
+  margin-bottom: 1rem;
+}
+
+.documents-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: bold;
+  margin-bottom: 0.25rem;
+}
+
+.documents-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.space-filler {
+  flex: 1;
+}
+
+.document-link {
+  font-size: 0.75rem;
+  background-color: var(--color-bg-alt);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  color: var(--cornell-link);
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.document-link:hover {
+  background-color: var(--cornell-light-gray);
+  border-color: var(--cornell-link);
+  color: var(--cornell-link);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 
