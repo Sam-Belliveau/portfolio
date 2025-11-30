@@ -45,7 +45,7 @@ export const researchProjects = [
 
 export const engineeringProjects = [
   {
-    title: "Real-Time Sound Localization",
+    title: "Real-Time Sound Localization (LINK)",
     link: "https://sam-belliveau.github.io/ece-4760-final-project/index.html",
     role: "System Architect",
     summary: "I architected a sound localization system on a Raspberry Pi Pico to achieve high-accuracy directional hearing with a sub-$20 BOM. I implemented a custom \"ping-pong\" DMA buffer strategy and cross-correlation engine in C to sample three synchronized MEMS microphones at 50kHz with zero latency. The system visualizes the sound source's location probability via a real-time heatmap on a VGA display.",

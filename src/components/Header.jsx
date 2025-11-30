@@ -1,28 +1,44 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import profilePic from '../assets/profile.jpg';
+import cornellLogo from '../assets/cornell-logo.svg';
 
-const Header = () => {
-    const scrollToSection = (id) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
+const Header = ({ personalInfo }) => {
     return (
-        <motion.header
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200"
-        >
-            <div className="container h-16 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <img src="/src/assets/cornell-logo.svg" alt="Cornell University" className="h-8 md:h-10" />
-                    <div className="hidden md:block w-px h-6 bg-gray-300 mx-2"></div>
-                    <span className="hidden md:block font-semibold text-gray-800 tracking-tight">Sam Belliveau</span>
+        <header className="header">
+            <div className="container header_inner">
+                <div className="profile">
+                    <div className="profile_pic-container">
+                        <img
+                            src={profilePic}
+                            alt="Profile"
+                            className="profile_pic"
+                        />
+                    </div>
+                    <div className="profile_info">
+                        <div className="profile_header">
+                            <div>
+                                <h1 className="profile_name">{personalInfo.name}</h1>
+                                <p className="profile_role">{personalInfo.title}</p>
+                            </div>
+                            <div className="profile_badge">
+                                <img src={cornellLogo} alt="Cornell University" className="profile_badge-img" />
+                            </div>
+                        </div>
+                        <p className="profile_bio">
+                            {personalInfo.bio}
+                        </p>
+                        <div className="profile_links">
+                            {personalInfo.links.map((link, index) => (
+                                <a key={index} href={link.url} className="profile_link" target="_blank" rel="noopener noreferrer">
+                                    <link.icon size={12} />
+                                    {link.name}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </motion.header>
+        </header>
     );
 };
 

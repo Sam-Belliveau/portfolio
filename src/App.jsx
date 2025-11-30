@@ -1,160 +1,21 @@
 import React from 'react';
 import { personalInfo, researchProjects, engineeringProjects, teachingExperience, industryExperience } from './data';
-import profilePic from './assets/profile.jpg';
-import cornellLogo from './assets/cornell-logo.svg';
-import { Download } from 'lucide-react';
+import Header from './components/Header';
+import Research from './components/Research';
+import Engineering from './components/Engineering';
+import Experience from './components/Experience';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <div className="app-container">
-      {/* Header / Hero Section */}
-      <header className="site-header">
-        <div className="container header-inner">
-          <div className="header-profile">
-            <div className="profile-pic-container">
-              <img
-                src={profilePic}
-                alt="Profile"
-                className="profile-pic"
-              />
-            </div>
-            <div className="profile-info">
-              <div className="profile-header">
-                <div>
-                  <h1 className="profile-name">{personalInfo.name}</h1>
-                  <p className="profile-role">{personalInfo.title}</p>
-                </div>
-                <div className="cornell-badge">
-                  <img src={cornellLogo} alt="Cornell University" className="cornell-logo-img" />
-                </div>
-              </div>
-              <p className="profile-bio">
-                {personalInfo.bio}
-              </p>
-              <div className="profile-links">
-                {personalInfo.links.map((link, index) => (
-                  <a key={index} href={link.url} className="profile-link" target="_blank" rel="noopener noreferrer">
-                    <link.icon size={12} />
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      <Header personalInfo={personalInfo} />
       <main>
-        {/* Research Section */}
-        <section id="research" className="section bg-alt">
-          <div className="container">
-            <h2 className="section-title">Research</h2>
-            <div className="project-list">
-              {researchProjects.map((project, index) => (
-                <div key={index} className="project-card">
-                  <div className="project-header">
-                    <h3 className="project-title">
-                      {project.link ? <a href={project.link}>{project.title}</a> : project.title}
-                    </h3>
-                    <span className="status-badge">{project.status}</span>
-                  </div>
-                  <p className="project-meta">{project.role}</p>
-
-                  <div className="project-summary">
-                    <p>{project.summary}</p>
-                  </div>
-
-                  <div className="project-footer">
-                    <div className="tech-tags">
-                      {project.tech.map((t, i) => (
-                        <span key={i} className="tech-tag">{t}</span>
-                      ))}
-
-                      {/* space filling div */}
-                      <div className="space-filler"></div>
-
-                      {project.documents && project.documents.length > 0 && (
-                        <div className="documents-list">
-                          {project.documents.map((doc, i) => (
-                            <a key={i} href={doc.url} className="document-link" download>
-                              <Download size={14} />
-                              {doc.name}
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Engineering Section */}
-        <section id="engineering" className="section">
-          <div className="container">
-            <h2 className="section-title">Engineering Projects</h2>
-            <div className="grid grid-cols-1">
-              {engineeringProjects.map((project, index) => (
-                <div key={index} className="engineering-card">
-                  {project.link ? <a href={project.link} className="engineering-title">{project.title}</a> : <h3 className="engineering-title">{project.title}</h3>}
-
-                  <div className="project-summary">
-                    <p>{project.summary}</p>
-                  </div>
-
-                  <div className="tech-tags">
-                    {project.tech.map((t, i) => (
-                      <span key={i} className="tech-tag">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Experience Section */}
-        <section id="experience" className="section bg-alt">
-          <div className="container">
-            <div className="grid grid-cols-2">
-              <div>
-                <h2 className="section-title">Teaching</h2>
-                <div className="experience-list">
-                  {teachingExperience.map((exp, index) => (
-                    <div key={index} className="experience-item">
-                      <h4 className="experience-title">{exp.course}</h4>
-                      <p className="experience-meta">{exp.institution} | {exp.role}</p>
-                      <p className="experience-description">{exp.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h2 className="section-title">Industry</h2>
-                <div className="experience-list">
-                  {industryExperience.map((exp, index) => (
-                    <div key={index} className="experience-item">
-                      <h4 className="experience-title">{exp.company}</h4>
-                      <p className="experience-meta">{exp.team} | {exp.role}</p>
-                      <p className="experience-description">{exp.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <Research projects={researchProjects} />
+        <Engineering projects={engineeringProjects} />
+        <Experience teaching={teachingExperience} industry={industryExperience} />
       </main>
-
-      <footer className="site-footer">
-        <div className="container">
-          <p>&copy; {new Date().getFullYear()} Sam Belliveau. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

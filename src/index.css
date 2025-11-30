@@ -71,19 +71,27 @@ a:hover {
 }
 
 /* Header */
-.site-header {
+.header {
   background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
   padding: var(--spacing-lg) 0;
 }
 
-.header-profile {
+.header_inner {
+  /* Container for header content */
+}
+
+.profile {
   display: flex;
   gap: var(--spacing-md);
   align-items: flex-start;
 }
 
-.profile-pic {
+.profile_pic-container {
+  /* Wrapper for profile picture */
+}
+
+.profile_pic {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -92,28 +100,28 @@ a:hover {
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.profile-info {
+.profile_info {
   flex: 1;
 }
 
-.profile-header {
+.profile_header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.profile-name {
+.profile_name {
   font-size: 2.25rem;
   margin-bottom: 0.25rem;
 }
 
-.profile-role {
+.profile_role {
   font-size: 1.125rem;
   color: var(--color-text-light);
   margin-bottom: var(--spacing-sm);
 }
 
-.cornell-badge {
+.profile_badge {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -122,29 +130,23 @@ a:hover {
   margin-bottom: var(--spacing-md);
 }
 
-.cornell-logo-img {  
+.profile_badge-img {  
   height: 3rem;
 }
 
-.nav-links {
-  display: flex;
-  gap: var(--spacing-sm);
-  font-size: 0.875rem;
-}
-
-.profile-bio {
+.profile_bio {
   max-width: 40rem;
   color: var(--color-text-light);
   margin-bottom: var(--spacing-sm);
 }
 
-.profile-links {
+.profile_links {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
 }
 
-.profile-link {
+.profile_link {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -158,7 +160,7 @@ a:hover {
   transition: all 0.2s;
 }
 
-.profile-link:hover {
+.profile_link:hover {
   background-color: var(--cornell-light-gray);
   border-color: var(--cornell-link);
   color: var(--cornell-link);
@@ -172,11 +174,11 @@ a:hover {
   padding: var(--spacing-lg) 0;
 }
 
-.bg-alt {
+.section--alt {
   background-color: var(--color-bg-alt);
 }
 
-.section-title {
+.section_title {
   font-family: var(--font-sans);
   font-size: 1.75rem;
   color: var(--cornell-red);
@@ -184,14 +186,14 @@ a:hover {
   padding-bottom: var(--spacing-xs);
 }
 
-/* Projects */
+/* Research Projects */
 .project-list {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
-.project-card {
+.research-card {
   background-color: var(--color-bg);
   padding: var(--spacing-md);
   border: 1px solid var(--color-border);
@@ -199,76 +201,80 @@ a:hover {
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-.project-header {
+.research-card_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
 }
 
-.project-title {
+.research-card_title {
   font-size: 1.25rem;
   margin: 0;
 }
 
-.status-badge {
-  padding: 0.25rem 0.75rem;
+.research-card_title a {
+  color: var(--color-text);
+}
+
+.research-card_title a:hover {
+  color: var(--cornell-red);
+}
+
+.research-card_status {
+  padding: 0.25rem;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-.project-summary {
-  margin-bottom: 1rem;
-  line-height: 1.6;
-}
-
-.project-title a {
-  color: var(--color-text);
-}
-
-.project-title a:hover {
-  color: var(--cornell-red);
-}
-
-.project-meta {
+.research-card_role {
   font-size: 0.875rem;
   color: var(--color-text-light);
   margin-bottom: var(--spacing-sm);
 }
 
-.project-description {
-  color: var(--color-text);
+.research-card_summary {
+  margin-bottom: 1rem;
+  line-height: 1.6;
 }
 
-/* Engineering */
+.research-card_footer {
+  /* Footer of the card */
+}
+
+/* Engineering Projects */
 .grid {
   display: grid;
   gap: var(--spacing-md);
 }
 
-.grid-cols-2 {
+.grid--cols-1 {
+  grid-template-columns: 1fr;
+}
+
+.grid--cols-2 {
   grid-template-columns: 1fr;
 }
 
 @media (min-width: 768px) {
-  .grid-cols-2 {
+  .grid--cols-2 {
     grid-template-columns: 1fr 1fr;
   }
   
-  .header-profile {
+  .profile {
     flex-direction: row;
   }
 }
 
 @media (max-width: 767px) {
-  .header-profile {
+  .profile {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
   
-  .profile-header {
+  .profile_header {
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-sm);
@@ -286,18 +292,25 @@ a:hover {
   background-color: var(--color-bg-alt);
 }
 
-.engineering-title {
+.engineering-card_title {
+  font-family: var(--font-sans);
   font-size: 1.125rem;
   margin-bottom: 0.5rem;
+  font-weight: 600;
+  display: block;
+  color: var(--color-text);
 }
 
-.engineering-description {
-  font-size: 0.875rem;
-  color: var(--color-text-light);
-  margin-bottom: var(--spacing-sm);
+.engineering-card_title:hover {
+  color: var(--cornell-red);
 }
 
-.tech-tags {
+.engineering-card_summary {
+  margin-bottom: 1rem;
+}
+
+/* Tech Tags */
+.tech-stack {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -320,28 +333,28 @@ a:hover {
   gap: var(--spacing-md);
 }
 
-.experience-item {
+.experience-card {
   margin-bottom: var(--spacing-sm);
 }
 
-.experience-title {
+.experience-card_title {
   font-size: 1rem;
   margin-bottom: 0.25rem;
 }
 
-.experience-meta {
+.experience-card_meta {
   font-size: 0.875rem;
   color: var(--color-text-light);
   margin-bottom: 0.5rem;
 }
 
-.experience-description {
+.experience-card_description {
   font-size: 0.875rem;
   color: var(--color-text);
 }
 
 /* Footer */
-.site-footer {
+.footer {
   border-top: 1px solid var(--color-border);
   padding: var(--spacing-md) 0;
   text-align: center;
@@ -349,26 +362,15 @@ a:hover {
   color: var(--color-text-light);
 }
 
-/* Project Documents */
-.project-documents {
-  margin-bottom: 1rem;
-}
-
-.documents-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: bold;
-  margin-bottom: 0.25rem;
-}
-
-.documents-list {
+/* Documents */
+.document-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.5rem;
 }
 
-.space-filler {
+.spacer {
   flex: 1;
 }
 
@@ -394,5 +396,3 @@ a:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-
-
