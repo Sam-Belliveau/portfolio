@@ -19,7 +19,7 @@ export const personalInfo = {
 export const researchProjects = [
   {
     title: 'CaptureGraph',
-    role: 'Lead Researcher, System Architect',
+    role: 'Sam Belliveau, Abe Davis',
     status: 'Under Review (SIGGRAPH 2026)',
     summary:
         'Hard-coding specific capture modes is unsustainable for diverse scientific needs. I architected CaptureGraph, an end-to-end system that decouples capture procedures from application logic using a custom Python-based DSL. This "Distribution-Aware" system serializes procedures into JSON for a companion iOS app, providing real-time, step-by-step guidance.',
@@ -37,7 +37,7 @@ export const researchProjects = [
   },
   {
     title: 'CineCraft',
-    role: 'Researcher, Second Author',
+    role: 'Nhan Tran, Sam Belliveau, Abe Davis',
     status: 'Accepted to CHI2026',
     summary:
         'Complex shots like synchronized dolly zooms traditionally require a coordinated film crew. I helped develop CineCraft, a tool for "Cellular Cinematography" that unifies planning, capture, and post-processing via a "Shot Plan" data structure. Utilizing a "Two-Plane Model" (Foreground/Background), the system automates focus and zoom in real-time. User studies demonstrated it significantly outperformed standard camera apps in execution success and matching creative intent.',
@@ -50,7 +50,7 @@ export const researchProjects = [
   },
   {
     title: 'DynaBox',
-    role: 'Researcher, Co-Author',
+    role: 'Jason Klein, Sam Belliveau',
     status: 'In Prep',
     summary:
         'Digitizing analog "talkbox" performances requires capturing the nuanced resonance of the vocal tract. I co-developed DynaBox, implementing AutoRegressive with eXtra input (ARX) models to isolate vocal tract resonances (formants) from source audio using only a smartphone. I engineered a pipeline to serialize these formants into MIDI Continuous Controller (CC) messages, allowing analog performances to be used as digital instruments in DAWs like Logic Pro.',

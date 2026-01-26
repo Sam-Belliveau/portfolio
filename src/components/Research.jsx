@@ -5,7 +5,7 @@ const Research = ({ projects }) => {
     return (
         <section id="research" className="section section--alt">
             <div className="container">
-                <h2 className="section_title">Research</h2>
+                <h2 className="section_title">Publications</h2>
                 <div className="project-list">
                     {projects.map((project, index) => (
                         <div key={index} className="research-card">
