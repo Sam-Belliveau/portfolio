@@ -20,7 +20,7 @@ export const researchProjects = [
   {
     title: 'CaptureGraph',
     role: 'Lead Researcher, System Architect',
-    status: 'In Prep',
+    status: 'Under Review (SIGGRAPH 2026)',
     summary:
         'Hard-coding specific capture modes is unsustainable for diverse scientific needs. I architected CaptureGraph, an end-to-end system that decouples capture procedures from application logic using a custom Python-based DSL. This "Distribution-Aware" system serializes procedures into JSON for a companion iOS app, providing real-time, step-by-step guidance.',
     tech: [
