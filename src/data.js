@@ -17,24 +17,30 @@ export const personalInfo = {
 };
 
 export const researchProjects = [
-  {
-    title: 'CaptureGraph',
-    role: 'Sam Belliveau, Abe Davis',
-    status: 'Under Review (SIGGRAPH 2026)',
-    summary:
-        'Hard-coding specific capture modes is unsustainable for diverse scientific needs. I architected CaptureGraph, an end-to-end system that decouples capture procedures from application logic using a custom Python-based DSL. This "Distribution-Aware" system serializes procedures into JSON for a companion iOS app, providing real-time, step-by-step guidance.',
-    tech: [
-      'Python (DSL)', 'iOS (Swift/SwiftUI)', 'JSON Serialization', 'Mobile HCI'
-    ],
-    documents: [
-      {
-        name: 'Presentation',
-        url:
-            'https://docs.google.com/presentation/d/11Wu5D2UKaE0_5eCtvr8rnnWVYde__XgE/edit?usp=sharing&ouid=109247465115682025485&rtpof=true&sd=true'
-      },
-    ],
-    image: null
-  },
+  // {
+  //   title: 'CaptureGraph',
+  //   role: 'Sam Belliveau, Abe Davis',
+  //   status: 'Under Review (SIGGRAPH 2026)',
+  //   summary:
+  //       'Hard-coding specific capture modes is unsustainable for diverse
+  //       scientific needs. I architected CaptureGraph, an end-to-end system
+  //       that decouples capture procedures from application logic using a
+  //       custom Python-based DSL. This "Distribution-Aware" system serializes
+  //       procedures into JSON for a companion iOS app, providing real-time,
+  //       step-by-step guidance.',
+  //   tech: [
+  //     'Python (DSL)', 'iOS (Swift/SwiftUI)', 'JSON Serialization', 'Mobile
+  //     HCI'
+  //   ],
+  //   documents: [
+  //     {
+  //       name: 'Presentation',
+  //       url:
+  //           'https://docs.google.com/presentation/d/11Wu5D2UKaE0_5eCtvr8rnnWVYde__XgE/edit?usp=sharing&ouid=109247465115682025485&rtpof=true&sd=true'
+  //     },
+  //   ],
+  //   image: null
+  // },
   {
     title: 'CineCraft',
     role: 'Nhan Tran, Sam Belliveau, Abe Davis',
