@@ -1,19 +1,11 @@
-:root {
-  --paper: #fdfdfb;
-  --ink: #1c1c1c;
-  --muted: #5f5f5f;
-  --rule: #d8d5cf;
-  --accent: #a01c1c;
-}
+@import './bevel.generated.css';
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #16181c;
-    --ink: #e6e4df;
-    --muted: #a29e97;
-    --rule: #3a3d42;
-    --accent: #e08585;
-  }
+:root {
+  color-scheme: light;
+  --ink: #2a2823;
+  --muted: #6d6a63;
+  --rule: #d5d2ca;
+  --accent: #9c1c1c;
 }
 
 * {
@@ -49,10 +41,47 @@ p {
   margin: 0 0 0.9rem;
 }
 
+.intro,
+section,
+.entry,
+.position,
+.dated-list li,
+.plate {
+  position: relative;
+}
+
+.intro::before,
+section::before,
+.entry::before,
+.position::before,
+.dated-list li::before,
+.plate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-style: solid;
+  border-width: 0;
+  mix-blend-mode: hard-light;
+}
+
+.intro,
+section {
+  border-radius: var(--bevel-panel-radius);
+  padding: 1.85rem 2.25rem 2rem;
+  margin-bottom: 2.75rem;
+}
+
+.intro::before,
+section::before {
+  border-image: var(--bevel-panel);
+}
+
 .intro {
   display: flex;
   gap: 2.5rem;
-  align-items: flex-start;
+  align-items: center;
+  padding: 2rem 2.25rem;
 }
 
 h1 {
@@ -72,18 +101,12 @@ h1 {
   margin-bottom: 1.4rem;
 }
 
-.portrait {
-  width: 11rem;
-  border-radius: 6px;
-  border: 1px solid var(--rule);
-}
-
 h2 {
-  margin: 2.75rem 0 1.4rem;
+  margin: 0 0 1.5rem;
   font-size: 1.4rem;
   font-weight: normal;
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.45rem;
 }
 
 h3 {
@@ -102,27 +125,65 @@ h3 {
   color: var(--muted);
 }
 
+.entry,
+.position,
+.dated-list li {
+  border-radius: var(--bevel-pill-radius);
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 1.3rem;
+}
+
+.entry::before,
+.position::before,
+.dated-list li::before {
+  border-image: var(--bevel-pill);
+}
+
+.entry:last-child,
+.position:last-child,
+.dated-list li:last-child {
+  margin-bottom: 0;
+}
+
 .entry {
   display: flex;
   gap: 1.4rem;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 .entry > div {
   min-width: 0;
 }
 
-.entry p:last-child {
+.entry p:last-child,
+.position p:last-child {
   margin-bottom: 0;
+}
+
+.plate {
+  display: block;
+  border-radius: var(--bevel-image-radius);
+}
+
+.plate::before {
+  border-image: var(--bevel-image);
+}
+
+.plate img {
+  display: block;
+  width: 100%;
+  -webkit-mask-box-image: var(--bevel-image-mask);
+  mask-border: var(--bevel-image-mask);
+}
+
+.portrait {
+  flex: none;
+  width: 11rem;
 }
 
 .thumbnail {
   flex: 0 0 14rem;
   width: 14rem;
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  background: #fff;
 }
 
 .byline {
@@ -140,14 +201,6 @@ h3 {
   color: var(--muted);
 }
 
-.position {
-  margin-bottom: 1.6rem;
-}
-
-.position p:last-child {
-  margin-bottom: 0;
-}
-
 .dated-list {
   margin: 0;
   padding: 0;
@@ -157,7 +210,6 @@ h3 {
 .dated-list li {
   display: flex;
   gap: 1.25rem;
-  margin-bottom: 0.55rem;
 }
 
 .dated-list .date {
@@ -167,7 +219,7 @@ h3 {
 }
 
 footer {
-  margin-top: 4rem;
+  margin-top: 3rem;
   padding-top: 1rem;
   border-top: 1px solid var(--rule);
   font-size: 0.9rem;
@@ -181,11 +233,18 @@ footer {
 
   .intro {
     flex-direction: column-reverse;
+    align-items: stretch;
     gap: 1.5rem;
+    padding: 1.5rem 1.4rem;
   }
 
   .portrait {
     width: 9rem;
+    align-self: flex-start;
+  }
+
+  section {
+    padding: 1.5rem 1.4rem 1.6rem;
   }
 
   .entry {

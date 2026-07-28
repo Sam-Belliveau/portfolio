@@ -9,6 +9,12 @@ import {
   publications,
 } from './content';
 
+const Plate = ({ className, src, alt, loading }) => (
+  <span className={`plate ${className}`}>
+    <img src={src} alt={alt} loading={loading} />
+  </span>
+);
+
 const Intro = () => (
   <header className="intro">
     <div>
@@ -24,7 +30,7 @@ const Intro = () => (
       </nav>
       {profile.bio}
     </div>
-    <img className="portrait" src={profile.photo} alt={profile.name} />
+    <Plate className="portrait" src={profile.photo} alt={profile.name} />
   </header>
 );
 
@@ -63,7 +69,9 @@ const AuthorList = ({ authors }) =>
 
 const Publication = ({ title, authors, venue, note, thumbnail }) => (
   <article className="entry">
-    {thumbnail && <img className="thumbnail" src={thumbnail} alt={title} loading="lazy" />}
+    {thumbnail && (
+      <Plate className="thumbnail" src={thumbnail} alt={title} loading="lazy" />
+    )}
     <div>
       <TitleLine title={title} />
       <p className="byline">
@@ -78,7 +86,9 @@ const Publication = ({ title, authors, venue, note, thumbnail }) => (
 
 const Project = ({ title, dates, href, description, tech, thumbnail }) => (
   <article className="entry">
-    {thumbnail && <img className="thumbnail" src={thumbnail} alt={title} loading="lazy" />}
+    {thumbnail && (
+      <Plate className="thumbnail" src={thumbnail} alt={title} loading="lazy" />
+    )}
     <div>
       <TitleLine title={title} href={href} dates={dates} />
       <p>{description}</p>

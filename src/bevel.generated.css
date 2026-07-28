@@ -1,0 +1,15 @@
+:root {
+  --paper: #eeebe5;
+  --bevel-panel: url('/bevel/panel.png') 172 fill / 86px / 48px stretch;
+  --bevel-panel-mask: url('/bevel/panel-mask.png') 172 fill / 86px / 48px stretch;
+  --bevel-panel-radius: 24px;
+  --bevel-panel-face: #eeebe5;
+  --bevel-pill: url('/bevel/pill.png') 92 fill / 46px / 24px stretch;
+  --bevel-pill-mask: url('/bevel/pill-mask.png') 92 fill / 46px / 24px stretch;
+  --bevel-pill-radius: 12px;
+  --bevel-pill-face: #edebe4;
+  --bevel-image: url('/bevel/image.png') 60 fill / 30px / 16px stretch;
+  --bevel-image-mask: url('/bevel/image-mask.png') 60 fill / 30px / 16px stretch;
+  --bevel-image-radius: 8px;
+  --bevel-image-face: #e8e4dd;
+}
