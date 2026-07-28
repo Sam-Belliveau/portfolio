@@ -1,17 +1,29 @@
-# React + Vite
+# samb.nyc
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal research website, in the style of a classic academic homepage.
 
-Currently, two official plugins are available:
+## Updating the site
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+All content lives in [`src/content.jsx`](src/content.jsx) — profile, news,
+publications, projects, experience, education, and honors are plain data
+exported from that one file. Edit it and push to `main`; GitHub Actions
+builds and deploys to GitHub Pages automatically.
 
-## React Compiler
+[`src/App.jsx`](src/App.jsx) renders that content and
+[`src/index.css`](src/index.css) styles it. Neither needs to change for
+routine updates.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Figure thumbnails live in `src/assets/figures/`, exported from the original
+project repositories. The résumé link points at the latest release of
+[Sam-Belliveau/resume](https://github.com/Sam-Belliveau/resume), which is
+also vendored as a submodule at `src/assets/resume_repo` and serves as the
+source of truth for the site's facts.
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
+```sh
+npm install
+npm run dev      # local preview
+npm run lint
+npm run build
+```
