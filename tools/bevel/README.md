@@ -1,138 +1,147 @@
-# Bevel Studio
+# Bevel
 
-Offline renderer for the site's raised surfaces. It ray-traces a beveled slab under a
-disk sun and a sky dome, then writes 9-slice tiles that CSS stretches with
-`border-image`.
-
-## Setup
-
-From the repo root:
+Path-traced nine-slice tiles for the site's raised surfaces. One card is built
+from erf curves, rendered in Cycles under a physical sky, and cut into
+`border-image` tiles the page retints at runtime.
 
 ```sh
 uv sync
+uv run tools/bevel/bake.py               # the tile
+uv run tools/bevel/bake.py --preview     # quarter scale, few samples
+uv run tools/bevel/bake.py --models-only # meshes only, no Cycles
+uv run tools/bevel/bake.py --css-only    # stylesheet only, no Cycles
 ```
 
-That is the whole setup. The root `pyproject.toml` installs `bevelkit` from
-`tools/bevel/` in editable mode, so it imports from anywhere in the venv and source
-edits take effect immediately.
-
-```sh
-uv run tools/bevel/serve_studio.py                        # live WebGL studio
-uv run tools/bevel/render_tiles.py                        # bake tiles + generated CSS
-uv run jupyter lab tools/bevel/notebooks/edge_studio.ipynb  # analysis notebook
-```
-
-## Live studio
-
-`serve_studio.py` opens a WebGL2 studio that runs the *same* model as a fragment
-shader, so edits are immediate instead of ~700 ms per preview. It reads and writes the
-same `config.json`, and **Bake tiles with Python** POSTs to `/render` so you can go
-from a live edit to final tiles without leaving the page.
-
-The GPU port is a two-pass shader. Pass one writes the height field and analytic normal
-into an `RGBA32F` target; pass two shades it, sampling that target for the horizon
-march. That is the same decomposition as the CPU renderer — the height field exists
-precisely so the march is a texture fetch rather than an SDF trace.
-
-Parity is not assumed, it is checked. The JS quintic/Hermite splines reproduce scipy to
-~1e-14, and flat-surface colours and sun gains match Python exactly. Two things that
-must stay in sync if you touch the shader: world space uses **+y down** to match the
-image convention (GL's default is +y up, which silently mirrors the lighting), and the
-top face takes the level's material while only the surrounding page takes `ground`.
-
-Two approximations are preview-only: the sun's Gaussian CDF uses the Abramowitz–Stegun
-`erf` (max error 1.5e-7), and the corner distance is a 256-segment polyline rather than
-1536. Neither affects baked output — always bake with Python.
+Blender is found automatically on macOS; override with `--blender`.
 
 ## Why it is not a box-shadow
 
-Paired light/dark blurs cannot produce a bevel: they have no surface, so the shading
-does not respond to the geometry and the shadow is just an offset silhouette. Here the
-card is a real height field and every pixel is shaded from its own normal.
+Paired light and dark blurs cannot produce a bevel: they have no surface, so the
+shading never responds to the geometry and the shadow is only an offset
+silhouette. Here the card is real geometry under a real sky, and every pixel is
+the answer to an actual light transport problem.
 
-## Model
+## One shape, one knob
 
-The card is a height field `h(x, y)`, which is what makes this cheap. Given the 2D
-distance `u` from the top-face outline:
+Everything is a tangent angle turning through offset erf steps, integrated as a
+point travelling around the unit circle.
 
-| region | height | normal |
-| --- | --- | --- |
-| `u ≤ 0` | `height` | `(0, 0, 1)` |
-| `0 < u < skirt` | `profile(u / skirt) · height` | analytic from `profile'` |
-| `u ≥ skirt` | `0` | `(0, 0, 1)` |
+```text
+theta(s) = sum_k  sweep_k * Phi((s - centre_k) / width)
+curve(s) = integral (cos theta, sin theta) ds
+```
 
-Because it is a height field there is no need to sphere-trace an SDF. For each azimuth
-we walk outward in 2D and track `max (h(sample) − z) / t`, which is the **horizon
-angle** in that direction. From it:
+Curvature is therefore a sum of Gaussians: smooth to every order, with nothing
+to tune but the width of a turn.
 
-- **Sun** — the fraction of the solar disc still above the horizon. With
-  `falloff: "gaussian"` the disc is a 2D Gaussian of width `angular_sigma`; because a
-  radially symmetric Gaussian has the same σ along every axis, the fraction above a
-  horizon line is exactly `Φ((θ_sun − θ_horizon) / σ)` — one normal CDF, no sampling.
-  `falloff: "disk"` uses a hard disc of `angular_radius` via the circular-segment area.
-  Either way the shadow length falls out of the geometry rather than being tuned.
-- **Sky** — the dome above the horizon, integrated in closed form per azimuth slice:
-  `∫ (N·ω) cosθ dθ` from the horizon to the zenith. Occlusion, ambient light and
-  ambient occlusion are the same integral, so contact darkening is not a separate
-  effect.
+- **Outline** — one periodic staircase of four 90 degree turns, summed over its
+  images and integrated once around the loop. Four *isolated* turns leave the
+  straight runs off by about 0.12 degrees where the tails are cut.
+- **Cross-section** — a closed pill, sliced by the ground through its equator.
 
-Shading is Lambert plus Blinn-Phong in linear sRGB. Gains are normalised so a flat,
-unoccluded surface renders to exactly its albedo, which is why panel tops are
-indistinguishable from the page behind them — `--paper` is emitted from that same
-computation rather than authored.
+`surface.curvature` is the whole shape. It is how much tighter the edge turns
+than the corner:
 
-## Edge profiles
+| value | meaning |
+| ----- | ------- |
+| 1 | equal curvature: one sphere sits tangent to both, the corner is a spherical fillet. The thickest a card can sensibly be — past it the edge is flatter than the corner it turns through. |
+| 2 | edge twice as tight, card half that thickness |
+| 3 | a third: a pressed sheet rather than a moulded card |
 
-A profile maps `u / skirt ∈ [0, 1]` to `z / height ∈ [1, 0]`.
+Thickness is never chosen. It follows the radius, so the card is one shape
+scaled by one number, and `surface.reach` sets what that costs: at 2.0 the bevel
+is 1.86x the radius and the profile meets the top face within 4 degrees.
 
-`continuity: "G3"` builds a **C4 quintic spline** with `f'(1) = f''(1) = f'''(1) = 0`,
-so the skirt meets the page with matching slope, curvature *and* curvature rate — no
-Mach band where it lands. Only `f'(0)` is constrained at the rim, leaving the
-deliberate crease. `continuity: "G1"` falls back to a monotone cubic (Fritsch–Carlson),
-which guarantees no overshoot but leaves curvature steps at every knot.
+**Nesting is a constant offset of the same curve, not a ladder of radii.** A
+smaller radius starts turning earlier than an offset does, so nesting by
+shrinking radii pinches the band at the corners by about 12%.
 
-Watch the slope, not just the height. A profile whose *slope* is non-monotonic reads as
-two separate highlight bands even though the curve looks fine.
+## Nine-slice, and why the frame is bigger than the tile
 
-## Corners
+```text
+slice = margin + extent + guard
+```
 
-`corner: "circular"` is the CSS `border-radius` arc: curvature jumps `0 → 1/R` at the
-tangent point, so it is only G1. `corner: "g3"` ramps curvature as `κ(s) ∝ sin²(πs/L)`,
-making `κ` and `dκ/ds` continuous at both ends while keeping the straight sections
-exactly straight — a G3 corner that is still valid to 9-slice.
+`margin` carries the cast shadow, its penumbra and the ambient falloff, so CSS
+never has to leave room for one. `extent` is the corner box. `guard` is the run
+of straight edge the corner still perturbs — measured in standard deviations of
+the corner's own Gaussian (`surface.guard_sigma`), because that is what its
+influence actually decays like.
 
-Use `circular` for anything CSS also clips (images clipped by `border-radius`), so the
-tile and the browser agree on the outline.
+`border-image` *stretches* the four edge strips, so whatever is in them has to be
+constant along the direction it gets stretched. A path trace is not — it carries
+per-pixel noise, and stretching noise smears it into streaks. So the frame is
+rendered wider than the tile by `strip`, a run of straight edge where the field
+genuinely is translation-invariant. Averaging along that run is not a blur: it is
+a better estimator of a single number, and it drops strip noise by the square
+root of the run length. The corner blocks keep their own noise and are crossfaded
+into the averaged strips across the guard band.
 
-## Nine-slice
+`bake.py` prints the residual drift along each stretched strip. It is zero to
+floating point.
 
-`slice = margin + radius + guard`, `guard = 2·height + corner_guard`. The guard matters:
-the corner perturbs sky occlusion for roughly a card height past its tangent point, and
-slicing inside that would stretch corner shading down the whole edge. The notebook
-asserts the middle row and column are bit-identical across their width.
+**This is why the material is spatially uniform.** Any grain would be averaged
+out of the strips and survive only in the corners.
+
+## Tile size
+
+The finished tile is cropped to `render.tile_pixels` from the outside, where the
+shadow has already faded to nothing. Cropping moves the slice and the outset in
+by the same amount, so the card still lands exactly on the element's edge — the
+tile just stops carrying shadow that was doing nothing. Raising `render.scale`
+against a fixed `tile_pixels` therefore buys effective resolution, until the crop
+reaches the card and the outset would go negative.
+
+## Retintable output
+
+Two renders per tile: `beauty` with the full material, `diffuse` with specular
+and sheen switched off. The diffuse render is albedo times shading, so dividing
+by its own flat value cancels the albedo exactly:
+
+```text
+darken(x)  = diffuse(x) / diffuse_flat                 -> multiply
+lighten(x) = 1 - (1 - render) / (1 - base*darken)      -> screen
+```
+
+`darken` is a pure shading ratio, so multiplying any colour by it carries the
+shadow, contact darkening and shaded bevel face along. It can only darken, and
+the sunlit bevel face is *brighter* than flat, so that surplus goes into
+`lighten` with the specular. The page composites
+
+```text
+screen(multiply(face, darken), lighten)
+```
+
+`--paper` is the mid grey the tiles were baked against, not a page colour: the
+reference is mid grey because `lighten`'s denominator collapses near white and
+bands. The page picks its own colours and the tiles retint them.
+
+The third layer is `mask`, the card's exact silhouette as alpha. CSS can only
+round a corner with a circular arc and this corner is not one, so any surface
+carrying its own colour is clipped with the mask rather than `border-radius`.
+
+## Dither
+
+Eight bits over a bevel this shallow bands visibly, so quantisation error is
+pushed into the frequencies the eye is worst at, via a void-and-cluster blue
+noise matrix. The middle band of the tile is exactly one matrix, since the edge
+strips are a single averaged profile broadcast along their run and everything
+past that is repetition.
 
 ## Layout
 
 ```text
+bake.py           host driver: meshes -> Blender -> tiles
+blender_scene.py  runs inside Blender: sky, paper, orthographic bake
 bevelkit/
-  config.py     defaults, JSON load/save/merge, output paths
-  profile.py    quintic G3 / monotone cubic edge profiles
-  corner.py     circular and G3 corner outlines, distance + gradient
-  geometry.py   height field, analytic normals, horizon marching
-  shading.py    sun disk, sky dome integral, materials, colour space
-  render.py     tile metrics and the render loop
-  emit.py       PNG + CSS custom property output
-  preview.py    matplotlib figures (analytic panes vs rendered tile)
-  studio.py     ipywidgets editor
+  shape.py     erf turns: outline, corner and cross-section
+  mesh.py      loft the card from those curves
+  layout.py    thickness from radius, margins, guards, slice and frame sizes
+  assemble.py  frame -> exactly edge-invariant nine-slice tile
+  emit.py      darken/lighten/mask split, PNG and custom properties
+  dither.py    blue noise
+  colour.py    sRGB transfer
+  config.py    defaults and JSON overlay
 ```
 
-Levels (`panel`, `pill`, `image`) each set `radius`, `height`, `skirt`, `profile`,
-`material`, `ground`, `corner` and `margin`. `ground` is the material the level rests
-on, so a pill on a panel renders its shadow against the panel's colour.
-
-Edits made in the notebook land in `config.json`, which overlays these defaults.
-
-The studio separates the two costs deliberately: profile, curvature and normals are
-spline evaluations and redraw live on every edit, while the tile is a raytrace and only
-runs on demand. Keep that split if you add panes — anything calling `render_once`
-belongs behind the preview button.
+`config.json` overlays `config.py`'s defaults and is the only thing to edit.

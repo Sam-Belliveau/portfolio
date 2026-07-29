@@ -1,36 +1,60 @@
 @import './bevel.generated.css';
+@import 'tailwindcss';
 
+/* One model, one tile. The card is configured by how much tighter its edge
+   turns than its corner: at 1 the two curvatures are equal, one sphere is
+   tangent to both, and the corner is a spherical fillet -- the thickest a card
+   can sensibly be. The bake runs at 2, so the edge is twice as tight and the
+   card half that thickness. Thickness is never chosen; it follows the radius,
+   and the whole card is one shape scaled by it.
+
+   Nesting is a constant offset of the same curve rather than a ladder of
+   shrinking radii: a smaller radius turns earlier than an offset does and
+   pinches the band at the corners.
+
+   Levels are told apart by paper alone -- page, panel, pill -- and by the
+   shading the tile lays over them.
+
+   Spacing is Tailwind's job. This file only does surfaces: corners, faces,
+   shading and the paper ramp. `--paper` in the generated sheet is the mid grey
+   the tiles were baked against, not a page colour; the page picks its own
+   whites and the tiles retint them, because `darken` is a pure shading ratio
+   with the albedo divided out. */
 :root {
   color-scheme: light;
-  --ink: #2a2823;
-  --muted: #6d6a63;
-  --rule: #d5d2ca;
-  --accent: #9c1c1c;
-}
 
-* {
-  box-sizing: border-box;
+  /* The paper ramp is Tailwind's stone scale, one step per level, so the three
+     surfaces stay evenly spaced in lightness instead of being hand-picked. */
+  --page: var(--color-stone-300);
+  --panel: var(--color-stone-200);
+  --pill: var(--color-stone-100);
+
+  /* The corner we actually want, in px and unitless. The tile is redrawn at
+     whatever multiple of its baked radius lands it here, so the effective
+     corner is a CSS number, so the page sets the corner it wants rather than
+     inheriting whatever the bake happened to use. */
+  --radius: 8;
+  --bevel-scale: calc(var(--radius) / var(--bevel-8-unit));
+
+  --darken: var(--bevel-8-darken);
+  --lighten: var(--bevel-8-lighten);
+  --mask: var(--bevel-8-mask);
+  --slice: var(--bevel-8-slice);
+  --outset: var(--bevel-8-outset);
+  --floor: calc(2 * var(--slice) * var(--bevel-scale));
 }
 
 body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--page);
+  color: var(--color-stone-800);
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 17px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-.page {
-  max-width: 54rem;
-  margin: 0 auto;
-  padding: 3.5rem 1.5rem 2rem;
-}
-
 a {
-  color: var(--accent);
-  text-decoration: none;
+  color: var(--color-red-800);
 }
 
 a:hover {
@@ -38,231 +62,133 @@ a:hover {
 }
 
 p {
-  margin: 0 0 0.9rem;
+  margin-bottom: 0.6rem;
+  text-align: justify;
+  hyphens: auto;
 }
 
+/* The page composites screen(multiply(face, darken), lighten). ::before is the
+   face, .shade the multiply, ::after the screen, and tree order stacks them
+   face -> darken -> content -> lighten. The screen is exactly zero over the
+   flat face, so it never touches the text it paints above.
+
+   Nothing here may become a stacking context. The tiles reach `outset` past the
+   element, and that overhang is the cast shadow, which has to multiply the
+   *parent's* paper rather than its own. So every box is position: relative with
+   z-index auto -- enough to order the painting, not enough to isolate the
+   blend. That is also why children are merely positioned and never raised with
+   z-index: a nested card has to keep blending with the panel underneath it. */
+.surface {
+  --face: var(--pill);
+  position: relative;
+  min-height: var(--floor);
+}
+
+/* Qualified so it outranks `.surface` above -- a bare `section` is one element
+   selector and would lose to it, leaving every panel painted as a pill. */
 .intro,
-section,
-.entry,
-.position,
-.dated-list li,
+section.surface {
+  --face: var(--panel);
+}
+
 .plate {
+  position: relative;
+  display: block;
+}
+
+/* Content is positioned so it paints above the multiply layer. The shade is
+   excluded by name: it is absolutely positioned, and a bare `> *` here outranks
+   the .shade rule and would drop it back into the flow. */
+.surface > *:not(.shade) {
   position: relative;
 }
 
-.intro::before,
-section::before,
-.entry::before,
-.position::before,
-.dated-list li::before,
-.plate::before {
+.surface::before,
+.surface::after,
+.plate::before,
+.plate::after,
+.shade {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: -1;
+  pointer-events: none;
   border-style: solid;
   border-width: 0;
-  mix-blend-mode: hard-light;
 }
 
-.intro,
-section {
-  border-radius: var(--bevel-panel-radius);
-  padding: 1.85rem 2.25rem 2rem;
-  margin-bottom: 2.75rem;
+/* The face is the level's own paper, clipped by the baked alpha mask so its
+   corner is the erf outline itself rather than a circular approximation. The
+   mask is scaled with the shading or the two would stop matching. */
+.surface::before,
+.plate img {
+  -webkit-mask-box-image: var(--mask);
+  -webkit-mask-box-image-width: calc(var(--slice) * var(--bevel-scale));
+  -webkit-mask-box-image-outset: calc(var(--outset) * var(--bevel-scale));
+  mask-border: var(--mask);
+  mask-border-width: calc(var(--slice) * var(--bevel-scale));
+  mask-border-outset: calc(var(--outset) * var(--bevel-scale));
 }
 
-.intro::before,
-section::before {
-  border-image: var(--bevel-panel);
+.surface::before {
+  background: var(--face);
 }
 
-.intro {
-  display: flex;
-  gap: 2.5rem;
-  align-items: center;
-  padding: 2rem 2.25rem;
-}
-
-h1 {
-  margin: 0;
-  font-size: 2.3rem;
-  font-weight: normal;
-  letter-spacing: 0.01em;
-}
-
-.headline {
-  margin: 0.35rem 0 0.5rem;
-  font-style: italic;
-  color: var(--muted);
-}
-
-.contact-links {
-  margin-bottom: 1.4rem;
-}
-
-h2 {
-  margin: 0 0 1.5rem;
-  font-size: 1.4rem;
-  font-weight: normal;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 0.45rem;
-}
-
-h3 {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  margin: 0 0 0.25rem;
-  font-size: 1.08rem;
-}
-
-.dates {
-  flex-shrink: 0;
-  font-size: 0.92rem;
-  font-weight: normal;
-  color: var(--muted);
-}
-
-.entry,
-.position,
-.dated-list li {
-  border-radius: var(--bevel-pill-radius);
-  padding: 1.15rem 1.35rem;
-  margin-bottom: 1.3rem;
-}
-
-.entry::before,
-.position::before,
-.dated-list li::before {
-  border-image: var(--bevel-pill);
-}
-
-.entry:last-child,
-.position:last-child,
-.dated-list li:last-child {
-  margin-bottom: 0;
-}
-
-.entry {
-  display: flex;
-  gap: 1.4rem;
-  align-items: center;
-}
-
-.entry > div {
-  min-width: 0;
-}
-
-.entry p:last-child,
-.position p:last-child {
-  margin-bottom: 0;
-}
-
-.plate {
-  display: block;
-  border-radius: var(--bevel-image-radius);
-}
-
+/* Width and outset must come *after* the shorthand: `border-image` is a
+   shorthand and resets both to the unscaled values carried in the variable, so
+   set first they would be silently thrown away. */
+.shade,
 .plate::before {
-  border-image: var(--bevel-image);
+  mix-blend-mode: multiply;
+  border-image: var(--darken);
+  border-image-width: calc(var(--slice) * var(--bevel-scale));
+  border-image-outset: calc(var(--outset) * var(--bevel-scale));
+}
+
+.surface::after,
+.plate::after {
+  mix-blend-mode: screen;
+  border-image: var(--lighten);
+  border-image-width: calc(var(--slice) * var(--bevel-scale));
+  border-image-outset: calc(var(--outset) * var(--bevel-scale));
+}
+
+/* Masking makes the image a stacking context, which lifts it above a plain
+   positioned pseudo-element; the z-index puts the tiles back on top. It
+   reorders without isolating, so the overhang still multiplies what is behind. */
+.plate::before,
+.plate::after {
+  z-index: 1;
 }
 
 .plate img {
   display: block;
   width: 100%;
-  -webkit-mask-box-image: var(--bevel-image-mask);
-  mask-border: var(--bevel-image-mask);
 }
 
-.portrait {
-  flex: none;
-  width: 11rem;
-}
-
-.thumbnail {
-  flex: 0 0 14rem;
-  width: 14rem;
-}
-
-.byline {
-  margin-bottom: 0.25rem;
-  color: var(--muted);
-}
-
-.byline strong {
-  color: var(--ink);
-}
-
-.tech {
-  font-size: 0.9rem;
-  font-style: italic;
-  color: var(--muted);
-}
-
-.dated-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.dated-list li {
-  display: flex;
-  gap: 1.25rem;
-}
-
-.dated-list .date {
-  flex: 0 0 7rem;
-  white-space: nowrap;
-  color: var(--muted);
-}
-
-footer {
-  margin-top: 3rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule);
-  font-size: 0.9rem;
-  color: var(--muted);
+/* The figures carry their own white margins, so filling the card's height and
+   centring the figure on that white reads as one white field rather than a
+   short image floating in a tall card. */
+.thumbnail img {
+  height: 100%;
+  background: #fff;
+  object-fit: contain;
 }
 
 @media (max-width: 640px) {
-  .page {
-    padding-top: 2rem;
-  }
-
-  .intro {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 1.5rem;
-    padding: 1.5rem 1.4rem;
-  }
-
-  .portrait {
-    width: 9rem;
-    align-self: flex-start;
-  }
-
-  section {
-    padding: 1.5rem 1.4rem 1.6rem;
-  }
-
-  .entry {
+  .intro,
+  .surface.flex {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .thumbnail {
-    flex: none;
+  .intro {
+    flex-direction: column-reverse;
+  }
+
+  .thumbnail,
+  .portrait {
     width: 100%;
     max-width: 22rem;
-  }
-
-  .dated-list li {
-    gap: 0.75rem;
-  }
-
-  .dated-list .date {
-    flex-basis: 5rem;
+    align-self: flex-start;
   }
 }

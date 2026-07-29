@@ -4,6 +4,11 @@ import cineCraftStoryboard from './assets/figures/cinecraft-storyboard.png';
 import dynaboxSpectrograms from './assets/figures/dynabox-spectrograms.png';
 import smolVlaSystolicArray from './assets/figures/smolvla-systolic-array.png';
 import soundLocalizationBoard from './assets/figures/sound-localization-board.png';
+import abeDavisLab from './assets/logos/abe-davis-lab.png';
+import cornellSeal from './assets/logos/cornell-seal.png';
+import cuauv from './assets/logos/cuauv.png';
+import hofstra from './assets/logos/hofstra.png';
+import reddit from './assets/logos/reddit.png';
 
 export const profile = {
   name: 'Sam Belliveau',
@@ -139,6 +144,7 @@ export const projects = [
 export const experience = [
   {
     organization: 'Cornell University — Abe Davis Lab',
+    logo: abeDavisLab,
     role: 'Undergraduate Researcher',
     dates: '2023 — Present',
     summary:
@@ -146,6 +152,7 @@ export const experience = [
   },
   {
     organization: 'Cornell University',
+    logo: cornellSeal,
     role: 'Teaching Assistant — ECE 4760: Microcontrollers',
     dates: '2025 — 2026',
     summary:
@@ -153,6 +160,7 @@ export const experience = [
   },
   {
     organization: 'Cornell Autonomous Underwater Vehicles',
+    logo: cuauv,
     role: 'Robotics Software Engineer',
     dates: '2023 — 2026',
     summary:
@@ -160,33 +168,30 @@ export const experience = [
   },
   {
     organization: 'Reddit, Inc.',
+    logo: reddit,
     role: 'Software Intern — Consumer Product Team',
     dates: 'Summers 2021 & 2022',
     summary:
       'Built a moderator-engagement notification system on BigQuery and Cassandra; later joined the Taxonomy Group to classify 138,000+ subreddits and measure classification models against synthetic ground-truth data.',
-  },
-  {
-    organization: 'Feinstein Institute for Medical Research',
-    role: 'Signal Analysis Intern',
-    dates: '2023',
-    summary:
-      'Built an automated sharp-wave-ripple detector in Python and SciPy to pull candidate events out of large EEG datasets for seizure-prediction research.',
   },
 ];
 
 export const education = [
   {
     school: 'Cornell University',
+    logo: cornellSeal,
     degree: 'Ph.D. in Computer Science — Bowers CIS, advised by Prof. Abe Davis',
     dates: '2026 — 2031 (expected)',
   },
   {
     school: 'Cornell University',
+    logo: cornellSeal,
     degree: 'B.S. in Electrical & Computer Engineering',
     dates: '2023 — 2026',
   },
   {
     school: 'Hofstra University',
+    logo: hofstra,
     degree: 'Computer Engineering coursework, transferred to Cornell',
     dates: '2022 — 2023',
   },
